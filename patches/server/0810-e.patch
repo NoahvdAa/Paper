@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Noah van der Aa <ndvdaa@gmail.com>
+Date: Thu, 25 Nov 2021 16:13:52 +0100
+Subject: [PATCH] e
+
+
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java b/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
+index 7503d4dba6838786efbae5ce18b1631eb59d75f3..2696c5c621015238ebfe96e64033d0139e639ecf 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
+@@ -80,10 +80,8 @@ public class SurfaceSystem {
+         });
+     }
+ 
+-    // Paper start
+-    private static final SurfaceRules.RuleSource FLAT_BEDROCK_ROOF = SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("bedrock_roof", VerticalAnchor.top(), VerticalAnchor.top())), net.minecraft.data.worldgen.SurfaceRuleData.BEDROCK);
+-    private static final SurfaceRules.RuleSource FLAT_BEDROCK_FLOOR = SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.bottom()), net.minecraft.data.worldgen.SurfaceRuleData.BEDROCK);
+-    // Paper end
++    //private static final SurfaceRules.RuleSource FLAT_BEDROCK_ROOF = SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("bedrock_roof", VerticalAnchor.top(), VerticalAnchor.top())), net.minecraft.data.worldgen.SurfaceRuleData.BEDROCK); // Paper
++    //private static final SurfaceRules.RuleSource FLAT_BEDROCK_FLOOR = SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.bottom()), net.minecraft.data.worldgen.SurfaceRuleData.BEDROCK); // Paper
+ 
+     public void buildSurface(BiomeManager biomeAccess, Registry<Biome> biomeRegistry, boolean useLegacyRandom, WorldGenerationContext context, ChunkAccess chunk, NoiseChunk chunkNoiseSampler, SurfaceRules.RuleSource surfaceRule, net.minecraft.world.level.Level level) { // Paper
+         final BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+@@ -116,11 +114,11 @@ public class SurfaceSystem {
+ 
+         // Paper start
+         if (level.paperConfig.generateFlatBedrock) {
+-            surfaceRule = switch(surfaceRule.id().getPath()) {
++            /*surfaceRule = switch(surfaceRule.id() != null ? surfaceRule.id().getPath() : null) {
+                 case "bedrock_roof" -> FLAT_BEDROCK_ROOF;
+                 case "bedrock_floor" -> FLAT_BEDROCK_FLOOR;
+                 default -> surfaceRule;
+-            };
++            };*/
+         }
+         // Paper end
+ 
