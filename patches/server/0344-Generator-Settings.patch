@@ -1,0 +1,113 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Byteflux <byte@byteflux.net>
+Date: Wed, 2 Mar 2016 02:17:54 -0600
+Subject: [PATCH] Generator Settings
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
+index 275c9e6c60dc78bc2acc6fc8a78727d2030babdd..4c9717c8c2a3bcac8ffe14fc6e7ef0bf242e08b8 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
++++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
+@@ -458,6 +458,11 @@ public class PaperWorldConfig {
+         disableRelativeProjectileVelocity = getBoolean("game-mechanics.disable-relative-projectile-velocity", false);
+     }
+ 
++    public boolean generateFlatBedrock;
++    private void generatorSettings() {
++        generateFlatBedrock = getBoolean("generator-settings.flat-bedrock", false);
++    }
++
+     public boolean disablePillagerPatrols = false;
+     private void pillagerSettings() {
+         disablePillagerPatrols = getBoolean("game-mechanics.disable-pillager-patrols", disablePillagerPatrols);
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
+index ba0725590973c8eeb4048049fc44e4fe9dc00f56..c4d9bc35d253a15b0e04e578a687e29db53797e5 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
+@@ -237,7 +237,7 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
+                 return new Beardifier(structures, chunk);
+             }, generatorsettingbase, this.globalFluidPicker, Blender.of(region));
+ 
+-            this.surfaceSystem.buildSurface(region.getBiomeManager(), region.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), generatorsettingbase.useLegacyRandomSource(), worldgenerationcontext, chunk, noisechunk, generatorsettingbase.surfaceRule());
++            this.surfaceSystem.buildSurface(region.getBiomeManager(), region.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), generatorsettingbase.useLegacyRandomSource(), worldgenerationcontext, chunk, noisechunk, generatorsettingbase.surfaceRule(), structures.getWorld()); // Paper
+         }
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java b/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java
+index e5601aa49a1258c4a78332da4a242fbc76859853..cede98b752ebf3e4b4f47d96abcf77d8e255ba15 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java
+@@ -212,6 +212,8 @@ public class SurfaceRules {
+         }
+ 
+         Codec<? extends SurfaceRules.ConditionSource> codec();
++
++        default ResourceLocation id() { return null; }; // Paper
+     }
+ 
+     protected static final class Context {
+@@ -516,6 +518,8 @@ public class SurfaceRules {
+         }
+ 
+         Codec<? extends SurfaceRules.RuleSource> codec();
++
++        default ResourceLocation id() { return null; }; // Paper
+     }
+ 
+     static record SequenceRule(List<SurfaceRules.SurfaceRule> rules) implements SurfaceRules.SurfaceRule {
+@@ -667,6 +671,9 @@ public class SurfaceRules {
+         public SurfaceRules.SurfaceRule apply(SurfaceRules.Context context) {
+             return new SurfaceRules.TestRule(this.ifTrue.apply(context), this.thenRun.apply(context));
+         }
++
++        @Override // Paper
++        public ResourceLocation id() { return this.ifTrue.id(); }; // Paper
+     }
+ 
+     static record VerticalGradientConditionSource(ResourceLocation randomName, VerticalAnchor trueAtAndBelow, VerticalAnchor falseAtAndAbove) implements SurfaceRules.ConditionSource {
+@@ -676,6 +683,9 @@ public class SurfaceRules {
+ 
+         // Paper - decompile fix
+ 
++        @Override // Paper
++        public ResourceLocation id() { return this.randomName; } // Paper
++
+         @Override
+         public Codec<? extends SurfaceRules.ConditionSource> codec() {
+             return CODEC;
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java b/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
+index a475eb6257ca4f8a5caf516ad817f1a72727fe22..7503d4dba6838786efbae5ce18b1631eb59d75f3 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
+@@ -80,7 +80,12 @@ public class SurfaceSystem {
+         });
+     }
+ 
+-    public void buildSurface(BiomeManager biomeAccess, Registry<Biome> biomeRegistry, boolean useLegacyRandom, WorldGenerationContext context, ChunkAccess chunk, NoiseChunk chunkNoiseSampler, SurfaceRules.RuleSource surfaceRule) {
++    // Paper start
++    private static final SurfaceRules.RuleSource FLAT_BEDROCK_ROOF = SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.verticalGradient("bedrock_roof", VerticalAnchor.top(), VerticalAnchor.top())), net.minecraft.data.worldgen.SurfaceRuleData.BEDROCK);
++    private static final SurfaceRules.RuleSource FLAT_BEDROCK_FLOOR = SurfaceRules.ifTrue(SurfaceRules.verticalGradient("bedrock_floor", VerticalAnchor.bottom(), VerticalAnchor.bottom()), net.minecraft.data.worldgen.SurfaceRuleData.BEDROCK);
++    // Paper end
++
++    public void buildSurface(BiomeManager biomeAccess, Registry<Biome> biomeRegistry, boolean useLegacyRandom, WorldGenerationContext context, ChunkAccess chunk, NoiseChunk chunkNoiseSampler, SurfaceRules.RuleSource surfaceRule, net.minecraft.world.level.Level level) { // Paper
+         final BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+         final ChunkPos chunkPos = chunk.getPos();
+         int i = chunkPos.getMinBlockX();
+@@ -108,6 +113,17 @@ public class SurfaceSystem {
+                 return "ChunkBlockColumn " + chunkPos;
+             }
+         };
++
++        // Paper start
++        if (level.paperConfig.generateFlatBedrock) {
++            surfaceRule = switch(surfaceRule.id().getPath()) {
++                case "bedrock_roof" -> FLAT_BEDROCK_ROOF;
++                case "bedrock_floor" -> FLAT_BEDROCK_FLOOR;
++                default -> surfaceRule;
++            };
++        }
++        // Paper end
++
+         SurfaceRules.Context context2 = new SurfaceRules.Context(this, chunk, chunkNoiseSampler, biomeAccess::getBiome, biomeRegistry, context);
+         SurfaceRules.SurfaceRule surfaceRule2 = surfaceRule.apply(context2);
+         BlockPos.MutableBlockPos mutableBlockPos2 = new BlockPos.MutableBlockPos();
