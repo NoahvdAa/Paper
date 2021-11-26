@@ -33,50 +33,8 @@ index ba0725590973c8eeb4048049fc44e4fe9dc00f56..c4d9bc35d253a15b0e04e578a687e29d
          }
      }
  
-diff --git a/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java b/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java
-index e5601aa49a1258c4a78332da4a242fbc76859853..cede98b752ebf3e4b4f47d96abcf77d8e255ba15 100644
---- a/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java
-+++ b/src/main/java/net/minecraft/world/level/levelgen/SurfaceRules.java
-@@ -212,6 +212,8 @@ public class SurfaceRules {
-         }
- 
-         Codec<? extends SurfaceRules.ConditionSource> codec();
-+
-+        default ResourceLocation id() { return null; }; // Paper
-     }
- 
-     protected static final class Context {
-@@ -516,6 +518,8 @@ public class SurfaceRules {
-         }
- 
-         Codec<? extends SurfaceRules.RuleSource> codec();
-+
-+        default ResourceLocation id() { return null; }; // Paper
-     }
- 
-     static record SequenceRule(List<SurfaceRules.SurfaceRule> rules) implements SurfaceRules.SurfaceRule {
-@@ -667,6 +671,9 @@ public class SurfaceRules {
-         public SurfaceRules.SurfaceRule apply(SurfaceRules.Context context) {
-             return new SurfaceRules.TestRule(this.ifTrue.apply(context), this.thenRun.apply(context));
-         }
-+
-+        @Override // Paper
-+        public ResourceLocation id() { return this.ifTrue.id(); }; // Paper
-     }
- 
-     static record VerticalGradientConditionSource(ResourceLocation randomName, VerticalAnchor trueAtAndBelow, VerticalAnchor falseAtAndAbove) implements SurfaceRules.ConditionSource {
-@@ -676,6 +683,9 @@ public class SurfaceRules {
- 
-         // Paper - decompile fix
- 
-+        @Override // Paper
-+        public ResourceLocation id() { return this.randomName; } // Paper
-+
-         @Override
-         public Codec<? extends SurfaceRules.ConditionSource> codec() {
-             return CODEC;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java b/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
-index a475eb6257ca4f8a5caf516ad817f1a72727fe22..7503d4dba6838786efbae5ce18b1631eb59d75f3 100644
+index 6cf22a63a5eb294782053bb69cdb6bcd0946d184..e018e2a92197f9cef661784ba497c563c1f9aea8 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/SurfaceSystem.java
 @@ -80,7 +80,12 @@ public class SurfaceSystem {
