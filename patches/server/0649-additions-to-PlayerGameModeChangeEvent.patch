@@ -45,7 +45,7 @@ index d75f78d2e3fb1376e8f6a8668c98a04a693c99e1..79f6089b934124c3309c6bee2e48b36b
          }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 160b1a7396472b682236d5f626ebf267bc8a5aea..f1661e228ed982f38e0bc3e9e0c1720608e0b4a4 100644
+index 3b1ae8ea7d538db0141dfaef6beefc7794e84854..eba071ec13ea683d649e055876a34c7620bca655 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1803,8 +1803,15 @@ public class ServerPlayer extends Player {
@@ -75,7 +75,7 @@ index 160b1a7396472b682236d5f626ebf267bc8a5aea..f1661e228ed982f38e0bc3e9e0c17206
          }
      }
  
-@@ -2198,6 +2205,16 @@ public class ServerPlayer extends Player {
+@@ -2213,6 +2220,16 @@ public class ServerPlayer extends Player {
      }
  
      public void loadGameTypes(@Nullable CompoundTag nbt) {
@@ -139,10 +139,10 @@ index 6764cfef07169db97662177837aa7815f7346a5d..1dce75b762c2b9134819bcd66d14fc07
                      }
                  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index d5d73ba9d6c7d1e91aa469c6d0e2df80393a621c..f623aad54714449d0c2793d68adbf8cfb1f640a2 100644
+index 08db548f37dfd7883f0fd1796873569e0f401c7d..11af0f0d0da83cdbf379adf4d75180c74004d9bd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1286,7 +1286,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1290,7 +1290,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              throw new IllegalArgumentException("Mode cannot be null");
          }
  

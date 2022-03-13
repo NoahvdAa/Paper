@@ -85,40 +85,62 @@ index 0000000000000000000000000000000000000000..b6f4400df3d8ec7e06a996de54f8cabb
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9b3f8b6ff7a2522e74bdbc914e35d566ab9c7697..e800229c294a04581c863349119f67270da1a6ca 100644
+index 9b3f8b6ff7a2522e74bdbc914e35d566ab9c7697..0a664be1d3ee0763e8ba6ebe3f76034053f2b2e1 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1828,6 +1828,7 @@ public class ServerPlayer extends Player {
+@@ -1825,9 +1825,25 @@ public class ServerPlayer extends Player {
+         return s;
+     }
+ 
++    // Paper start - Client option API
++    private java.util.Map<com.destroystokyo.paper.ClientOption<?>, ?> getClientOptionMap(String locale, int viewDistance, com.destroystokyo.paper.ClientOption.ChatVisibility chatVisibility, boolean chatColors, com.destroystokyo.paper.PaperSkinParts skinParts, org.bukkit.inventory.MainHand mainHand, boolean allowsServerListing, boolean hasTextFilteringEnabled) {
++        java.util.Map<com.destroystokyo.paper.ClientOption<?>, Object> map = new java.util.HashMap<>();
++        map.put(com.destroystokyo.paper.ClientOption.LOCALE, locale);
++        map.put(com.destroystokyo.paper.ClientOption.VIEW_DISTANCE, viewDistance);
++        map.put(com.destroystokyo.paper.ClientOption.CHAT_VISIBILITY, chatVisibility);
++        map.put(com.destroystokyo.paper.ClientOption.CHAT_COLORS_ENABLED, chatColors);
++        map.put(com.destroystokyo.paper.ClientOption.SKIN_PARTS, skinParts);
++        map.put(com.destroystokyo.paper.ClientOption.MAIN_HAND, mainHand);
++        map.put(com.destroystokyo.paper.ClientOption.ALLOW_SERVER_LISTINGS, allowsServerListing);
++        map.put(com.destroystokyo.paper.ClientOption.TEXT_FILTERING_ENABLED, hasTextFilteringEnabled);
++        return map;
++    }
++    // Paper end
++
      public String locale = null; // CraftBukkit - add, lowercase // Paper - default to null
      public java.util.Locale adventure$locale = java.util.Locale.US; // Paper
      public void updateOptions(ServerboundClientInformationPacket packet) {
-+        new com.destroystokyo.paper.event.player.PlayerClientOptionsChangeEvent(getBukkitEntity(), packet.language, packet.viewDistance, com.destroystokyo.paper.ClientOption.ChatVisibility.valueOf(packet.chatVisibility().name()), packet.chatColors(), new com.destroystokyo.paper.PaperSkinParts(packet.modelCustomisation()), packet.mainHand() == HumanoidArm.LEFT ? MainHand.LEFT : MainHand.RIGHT).callEvent(); // Paper - settings event
++        new com.destroystokyo.paper.event.player.PlayerClientOptionsChangeEvent(getBukkitEntity(), getClientOptionMap(packet.language, packet.viewDistance, com.destroystokyo.paper.ClientOption.ChatVisibility.valueOf(packet.chatVisibility().name()), packet.chatColors(), new com.destroystokyo.paper.PaperSkinParts(packet.modelCustomisation()), packet.mainHand() == HumanoidArm.LEFT ? MainHand.LEFT : MainHand.RIGHT, packet.allowsListing(), packet.textFilteringEnabled())).callEvent(); // Paper - settings event
          // CraftBukkit start
          if (getMainArm() != packet.mainHand()) {
              PlayerChangedMainHandEvent event = new PlayerChangedMainHandEvent(this.getBukkitEntity(), getMainArm() == HumanoidArm.LEFT ? MainHand.LEFT : MainHand.RIGHT);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 3412f03fae9857243ae51905218818c4ad64beec..f4643f7ca1468bd7bd60637bf6096a828d1c0a40 100644
+index 3412f03fae9857243ae51905218818c4ad64beec..96aef16d234a232568c30bc14b03d540a010b8b4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -561,6 +561,24 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -561,6 +561,28 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void setSendViewDistance(int viewDistance) {
          throw new NotImplementedException("Per-Player View Distance APIs need further understanding to properly implement (There are per world view distances though!)"); // TODO
      }
 +
 +    @Override
 +    public <T> T getClientOption(com.destroystokyo.paper.ClientOption<T> type) {
-+        if(com.destroystokyo.paper.ClientOption.SKIN_PARTS.equals(type)) {
++        if (com.destroystokyo.paper.ClientOption.SKIN_PARTS == type) {
 +            return type.getType().cast(new com.destroystokyo.paper.PaperSkinParts(getHandle().getEntityData().get(net.minecraft.world.entity.player.Player.DATA_PLAYER_MODE_CUSTOMISATION)));
-+        } else if(com.destroystokyo.paper.ClientOption.CHAT_COLORS_ENABLED.equals(type)) {
++        } else if (com.destroystokyo.paper.ClientOption.CHAT_COLORS_ENABLED == type) {
 +            return type.getType().cast(getHandle().canChatInColor());
-+        } else if(com.destroystokyo.paper.ClientOption.CHAT_VISIBILITY.equals(type)) {
++        } else if (com.destroystokyo.paper.ClientOption.CHAT_VISIBILITY == type) {
 +            return type.getType().cast(getHandle().getChatVisibility() == null ? com.destroystokyo.paper.ClientOption.ChatVisibility.UNKNOWN : com.destroystokyo.paper.ClientOption.ChatVisibility.valueOf(getHandle().getChatVisibility().name()));
-+        } else if(com.destroystokyo.paper.ClientOption.LOCALE.equals(type)) {
++        } else if (com.destroystokyo.paper.ClientOption.LOCALE == type) {
 +            return type.getType().cast(getLocale());
-+        } else if(com.destroystokyo.paper.ClientOption.MAIN_HAND.equals(type)) {
++        } else if (com.destroystokyo.paper.ClientOption.MAIN_HAND == type) {
 +            return type.getType().cast(getMainHand());
-+        } else if(com.destroystokyo.paper.ClientOption.VIEW_DISTANCE.equals(type)) {
++        } else if (com.destroystokyo.paper.ClientOption.VIEW_DISTANCE == type) {
 +            return type.getType().cast(getClientViewDistance());
++        } else if (com.destroystokyo.paper.ClientOption.ALLOW_SERVER_LISTINGS == type) {
++            return type.getType().cast(getHandle().allowsListing());
++        } else if (com.destroystokyo.paper.ClientOption.TEXT_FILTERING_ENABLED == type) {
++            return type.getType().cast(getHandle().isTextFilteringEnabled());
 +        }
 +        throw new RuntimeException("Unknown settings type");
 +    }

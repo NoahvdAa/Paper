@@ -5,10 +5,10 @@ Subject: [PATCH] Player elytra boost API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 03a0d25305a2f8e744e11493bb1f469b89f48d84..6133280b544cbd30cf1f67e5cbc452261a042b20 100644
+index b6ba2c9a9c4848b0b6e002898cb98e4ab758a792..a583d4fa42a41d3e775b699a25180f41f9440cae 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -579,6 +579,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -583,6 +583,20 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          }
          throw new RuntimeException("Unknown settings type");
      }
