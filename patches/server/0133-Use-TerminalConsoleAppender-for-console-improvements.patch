@@ -236,7 +236,7 @@ index 17afebfc2091392c5ec9aa9f6734ff71d67c9dac..caf92576ed2023f721810b7dd09dd194
  
          this.bans = new UserBanList(PlayerList.USERBANLIST_FILE);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e0460aa4154ea31743c6b99ff0ec009a37f7fee4..39a64d8257b2405aa3f94b01fdb858ced0a9342d 100644
+index c8d7a4d917ac9534309dfcc2c2448e720ed6a7a5..933a06f998fe79eaae05bbff6af5398db0104187 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -45,7 +45,6 @@ import java.util.logging.Level;
@@ -262,7 +262,7 @@ index e0460aa4154ea31743c6b99ff0ec009a37f7fee4..39a64d8257b2405aa3f94b01fdb858ce
      @Override
      public PluginCommand getPluginCommand(String name) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index b3d62affc6558d2c3082a75793ebd8b521eb1df6..75789a104025469fbee0d934396f65e5e47e0e41 100644
+index 3cb9dc300be149d065dc7a369fa1d7decc4b4fd1..323fd5d528f3787b46324f55b995e17406fe5175 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -12,7 +12,7 @@ import java.util.logging.Level;
@@ -301,7 +301,7 @@ index b3d62affc6558d2c3082a75793ebd8b521eb1df6..75789a104025469fbee0d934396f65e5
 +                    System.setProperty(TerminalConsoleAppender.JLINE_OVERRIDE_PROPERTY, "false"); // Paper
                  }
  
-                 if (Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {
+                 if (false && Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {
 @@ -242,7 +253,7 @@ public class Main {
                      System.out.println("Unable to read system info");
                  }
