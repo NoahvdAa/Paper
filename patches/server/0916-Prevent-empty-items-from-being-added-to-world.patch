@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Owen1212055 <23108066+Owen1212055@users.noreply.github.com>
+Date: Wed, 15 Jun 2022 21:52:57 -0400
+Subject: [PATCH] Prevent empty items from being added to world
+
+The previous solution caused a bunch of bandaid fixes inorder to resolve edge cases where minecraft/the api might spawn items that are air.
+Just simply prevent them from being added to the world instead.
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 98209532ad3e692d7e459640123f78bbd9a65889..28e4283fbafbd918110f5997da31ff30412bed02 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -1413,6 +1413,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+             // WorldServer.LOGGER.warn("Tried to add entity {} but it was marked as removed already", EntityTypes.getKey(entity.getType())); // CraftBukkit
+             return false;
+         } else {
++            if (entity instanceof net.minecraft.world.entity.item.ItemEntity itemEntity && itemEntity.getItem().isEmpty()) return false; // Paper - Prevent empty items from being added
+             // Paper start - capture all item additions to the world
+             if (captureDrops != null && entity instanceof net.minecraft.world.entity.item.ItemEntity) {
+                 captureDrops.add((net.minecraft.world.entity.item.ItemEntity) entity);
+diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+index 336d753bbd836e2a08207c5e3d41acbe2b72543f..d6d5f5b0663ddbd277a65b1b16bf9fe202532744 100644
+--- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
++++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+@@ -503,7 +503,7 @@ public class ItemEntity extends Entity {
+     }
+ 
+     public void setItem(ItemStack stack) {
+-        com.google.common.base.Preconditions.checkArgument(!stack.isEmpty(), "Cannot drop air"); // CraftBukkit
++        // com.google.common.base.Preconditions.checkArgument(!stack.isEmpty(), "Cannot drop air"); // CraftBukkit // Paper - Remove check
+         this.getEntityData().set(ItemEntity.DATA_ITEM, stack);
+         this.getEntityData().markDirty(ItemEntity.DATA_ITEM); // CraftBukkit - SPIGOT-4591, must mark dirty
+         net.minecraft.resources.ResourceLocation location = net.minecraft.core.Registry.ITEM.getKey(stack.getItem()); // Paper
