@@ -6,10 +6,10 @@ Subject: [PATCH] Fix deop kicking non-whitelisted player when white list is
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index e22ef9d02a64852f09a8d528a366817aceaf55dc..8ebd25e66301c62ae30d53f2104f732a32939029 100644
+index 481a3aa7facd20bc0d6a2e1aa492d1d233961b81..1ea5201fad2842e70cff06b0f9668663623aac4c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -2097,13 +2097,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2104,13 +2104,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          if (this.isEnforceWhitelist()) {
              PlayerList playerlist = source.getServer().getPlayerList();
              UserWhiteList whitelist = playerlist.getWhiteList();

@@ -5,10 +5,10 @@ Subject: [PATCH] Add PlayerKickEvent causes
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b8ffd95bbad81521b9f91e83f63188553c09d4bd..8aaf73d24ddff65c45eeb18d573e20fb8a1439a5 100644
+index 6701137832d7eeadf4d4975a6cb1e47a66bf6adb..b5e5c4610c2e94fe31ce545a4a4364f466e8c568 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -2117,7 +2117,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2124,7 +2124,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  ServerPlayer entityplayer = (ServerPlayer) iterator.next();
  
                  if (!whitelist.isWhiteListed(entityplayer.getGameProfile()) && !this.getPlayerList().isOp(entityplayer.getGameProfile())) { // Paper - Fix kicking ops when whitelist is reloaded (MC-171420)

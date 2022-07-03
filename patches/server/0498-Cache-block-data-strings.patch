@@ -5,10 +5,10 @@ Subject: [PATCH] Cache block data strings
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 5edb1f4be4d0306a22827d1330a08251e5cb1fbe..e22ef9d02a64852f09a8d528a366817aceaf55dc 100644
+index 1ce7bf4a97858bf7dbc669cbd19d26efc7a7d4c9..481a3aa7facd20bc0d6a2e1aa492d1d233961b81 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -2031,6 +2031,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2038,6 +2038,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              this.getPlayerList().reloadResources();
              this.functionManager.replaceLibrary(this.resources.managers.getFunctionLibrary());
              this.structureManager.onResourceManagerReload(this.resources.resourceManager);

@@ -71,7 +71,7 @@ index 8cc4cb2163a93b9491550fe6d0f5d980fb216920..4dd14d73a37b32288a64fbd67ee22c43
              cause = cause.getCause();
          }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 03ebc2a0476aef9297cbbc7f358915703a469b02..4ed65f1371013fb91fe60a0e1501e222a6e9c508 100644
+index 03ebc2a0476aef9297cbbc7f358915703a469b02..c0d18d5a51dd957cb8bc294e438645b09b34a04f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -297,7 +297,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -219,13 +219,20 @@ index 03ebc2a0476aef9297cbbc7f358915703a469b02..4ed65f1371013fb91fe60a0e1501e222
                      throw new RuntimeException("Error generating crash report", t);
                  }
                  // Spigot End
-@@ -1949,7 +2003,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1949,7 +2003,15 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              this.packRepository.setSelected(dataPacks);
              this.worldData.setDataPackConfig(MinecraftServer.getSelectedPacks(this.packRepository));
              this.resources.managers.updateRegistryTags(this.registryAccess());
 -            this.getPlayerList().saveAll();
-+            if (Thread.currentThread() != this.serverThread) return; // Paper
-+            //this.getPlayerList().saveAll(); // Paper - we don't need to do this
++            // Paper start
++            if (Thread.currentThread() != this.serverThread) {
++                return;
++            }
++            // this.getPlayerList().saveAll(); // Paper - we don't need to save everything, just advancements
++            for (ServerPlayer player : this.getPlayerList().getPlayers()) {
++                player.getAdvancements().save();
++            }
++            // Paper end
              this.getPlayerList().reloadResources();
              this.functionManager.replaceLibrary(this.resources.managers.getFunctionLibrary());
              this.structureManager.onResourceManagerReload(this.resources.resourceManager);
@@ -336,7 +343,7 @@ index 21a10a0dc98cb2c669a505d6185c2093855afae6..9e2adc414d43f0c91f222be5f082e74d
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 69b7a11d423b1cd8560cd726dd2b9a2b203e7dfd..7a5e7e8a680ead5128fbf5829bc47704715b94bd 100644
+index b8067e33b290d0df1e76309ce76dab1648b3c000..89ea650db41aa8c1ebf84b9da3a31e2a2985fc10 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -12,6 +12,8 @@ import java.util.logging.Level;

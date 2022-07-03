@@ -72,7 +72,7 @@ index 0000000000000000000000000000000000000000..41f6c2e1e60fc32e6393097711412ca2
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9941456a019a34384f892c44df3c73f9416bd560..d109ef77109fbeb710eafb55a38c803b9bb37d73 100644
+index 32347e8326911123630eb4cf2560fe7674997f84..190be002fe44354de4794350ecb9900af71b1b38 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -2032,7 +2032,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -82,8 +82,8 @@ index 9941456a019a34384f892c44df3c73f9416bd560..d109ef77109fbeb710eafb55a38c803b
 -            io.papermc.paper.PaperRegistry.clearCaches(); // Paper
 +            io.papermc.paper.registry.PaperRegistry.clearCaches(); // Paper
              new io.papermc.paper.event.server.ServerResourcesReloadedEvent(cause).callEvent(); // Paper
-             if (Thread.currentThread() != this.serverThread) return; // Paper
-             //this.getPlayerList().saveAll(); // Paper - we don't need to do this
+             // Paper start
+             if (Thread.currentThread() != this.serverThread) {
 diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
 index fff5c9d40a0bab8642376db3ec25cc1e8d666fa6..a3af8b892a01756addc8c24e0726b5a8a700cbba 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java

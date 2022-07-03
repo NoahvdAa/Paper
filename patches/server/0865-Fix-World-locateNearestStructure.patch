@@ -7,7 +7,7 @@ Subject: [PATCH] Fix World#locateNearestStructure
   impl needs to be changed to reflect that
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b079677723ff65f64adec044e7d89656ecc49e4d..583d2deffa819c1aa25e1937a7f709d0d6bab294 100644
+index 07dea2d77be4526b3f813b2114ea977e4716f7c6..8659cab2869e1e5c667ef448fdf8dee1b702afdf 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -2056,6 +2056,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -20,8 +20,8 @@ index b079677723ff65f64adec044e7d89656ecc49e4d..583d2deffa819c1aa25e1937a7f709d0
 +            }
 +            // Paper end
              new io.papermc.paper.event.server.ServerResourcesReloadedEvent(cause).callEvent(); // Paper
-             if (Thread.currentThread() != this.serverThread) return; // Paper
-             //this.getPlayerList().saveAll(); // Paper - we don't need to do this
+             // Paper start
+             if (Thread.currentThread() != this.serverThread) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
 index 344c5bafe291a2542c4940e4d80232644de7b877..00e6f60e13f50c727530de37ab9692ad3683c11b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
