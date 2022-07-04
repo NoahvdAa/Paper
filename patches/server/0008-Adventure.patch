@@ -1962,7 +1962,7 @@ index b8b47416b66ec2272ce9ffdc06b0a1dd91b4c05a..5476dc1e80093d7684bc238bae102cbb
 +    // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index fae37b7b353cb7b0f8d4a79407fcc219a3c45b64..aff3116c77277dcb4d3825d33f40a0b17258a0ba 100644
+index 6799d683162cd33af80cb37e86648a2c4760d326..7c4b86ffdb0f2cdd61b105c435e4b60f003fbe84 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -19,6 +19,12 @@ public class Main {
@@ -2192,14 +2192,19 @@ index 9e68893b189ad05e4d2a5e8788e93e10670ac824..26f21754b5ec3d1cbd455c4d9d04af29
          Component[] components = new Component[4];
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/CraftBlockCommandSender.java b/src/main/java/org/bukkit/craftbukkit/command/CraftBlockCommandSender.java
-index 83efca7144b4ce9cf7bd6bbbbf9c4426d2472315..bf4c5c83c3c6d710c9c40257087a2c744a7d00c6 100644
+index 83efca7144b4ce9cf7bd6bbbbf9c4426d2472315..b5457eb80b98696d6b9824a339249e46292d4d7d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/CraftBlockCommandSender.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/CraftBlockCommandSender.java
-@@ -46,6 +46,13 @@ public class CraftBlockCommandSender extends ServerCommandSender implements Bloc
+@@ -46,6 +46,18 @@ public class CraftBlockCommandSender extends ServerCommandSender implements Bloc
          return this.block.getTextName();
      }
  
 +    // Paper start
++    @Override
++    public void sendMessage(net.kyori.adventure.identity.Identity identity, net.kyori.adventure.text.Component message, net.kyori.adventure.audience.MessageType type) {
++        block.source.sendMessage(io.papermc.paper.adventure.PaperAdventure.asVanilla(message), Util.NIL_UUID);
++    }
++
 +    @Override
 +    public net.kyori.adventure.text.Component name() {
 +        return io.papermc.paper.adventure.PaperAdventure.asAdventure(this.block.getDisplayName());
