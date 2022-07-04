@@ -5,10 +5,10 @@ Subject: [PATCH] Expose LivingEntity hurt direction
 
 
 diff --git a/src/main/java/org/bukkit/entity/LivingEntity.java b/src/main/java/org/bukkit/entity/LivingEntity.java
-index 751a7345b650e96bbfd3ca9d22c9623bd5444f67..330eab77547ae059f716418f71ad1d3391a57a9b 100644
+index d8e8350484c2133d478895163e88c00db4faa921..b99f00da7765cfe7dee579fcf67a535f3ede3357 100644
 --- a/src/main/java/org/bukkit/entity/LivingEntity.java
 +++ b/src/main/java/org/bukkit/entity/LivingEntity.java
-@@ -852,5 +852,19 @@ public interface LivingEntity extends Attributable, Damageable, ProjectileSource
+@@ -851,5 +851,19 @@ public interface LivingEntity extends Attributable, Damageable, ProjectileSource
       * @param quantity quantity of item
       */
      void playPickupItemAnimation(@NotNull Item item, int quantity);
