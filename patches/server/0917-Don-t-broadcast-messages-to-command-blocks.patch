@@ -20,10 +20,10 @@ index fca57e5d1e25db6367c53ad04e49508ebf2223e7..cf0d2f3374b6487668763a0aee2bbe1f
              Date date = new Date();
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8a248e34fce1e04de4460f98b7627df495c66af1..bc634db39e7cb76cf4b069fff6c03682c84e955e 100644
+index 6a9a7e50854317cac4a4a6ce4c3b87f20de19941..a952e32129cc98d09df6f73845b269c6e32c5b28 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1756,7 +1756,7 @@ public final class CraftServer implements Server {
+@@ -1757,7 +1757,7 @@ public final class CraftServer implements Server {
          // Paper end
          Set<CommandSender> recipients = new HashSet<>();
          for (Permissible permissible : this.getPluginManager().getPermissionSubscriptions(permission)) {
