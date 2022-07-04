@@ -62,3 +62,16 @@ index e3efea8623c7d34915069a6b9b7da9f2b1694c28..118472b83a21a250f398c088c91ac456
                      Util.ifElse(profile, (profilex) -> {
                          Property property = Iterables.getFirst(profilex.getProperties().get("textures"), (Property)null);
                          if (property == null) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/profile/CraftPlayerProfile.java b/src/main/java/org/bukkit/craftbukkit/profile/CraftPlayerProfile.java
+index 661d8e9882509700faa9bc10a2e3074c5553af44..9001c9dc68dc05944eb839c3354bea29249daa92 100644
+--- a/src/main/java/org/bukkit/craftbukkit/profile/CraftPlayerProfile.java
++++ b/src/main/java/org/bukkit/craftbukkit/profile/CraftPlayerProfile.java
+@@ -123,7 +123,7 @@ public final class CraftPlayerProfile implements PlayerProfile, com.destroystoky
+ 
+     @Override
+     public CompletableFuture<PlayerProfile> update() {
+-        return CompletableFuture.supplyAsync(this::getUpdatedProfile, Util.backgroundExecutor());
++        return CompletableFuture.supplyAsync(this::getUpdatedProfile, Util.PROFILE_EXECUTOR); // Paper - not a good idea to use BLOCKING OPERATIONS on the worldgen executor
+     }
+ 
+     private CraftPlayerProfile getUpdatedProfile() {
