@@ -1908,7 +1908,7 @@ index 66e8fea6bd10af2e19a4f49c556e66a63e6205b6..81e78644417764cee33f81cdb116a91f
 +    // Paper start
 +    @Override
 +    public net.kyori.adventure.text.Component motd() {
-+        return io.papermc.paper.adventure.PaperAdventure.asAdventure(new net.minecraft.network.chat.TextComponent(console.getMotd()));
++        return net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(console.getMotd());
 +    }
 +    // Paper end
      @Override
