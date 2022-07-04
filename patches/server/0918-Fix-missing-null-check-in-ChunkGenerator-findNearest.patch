@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Shane Freeder <theboyetronic@gmail.com>
+Date: Mon, 20 Jun 2022 14:59:38 +0100
+Subject: [PATCH] Fix missing null check in
+ ChunkGenerator#findNearestMapStructure
+
+
+diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
+index daff5a9dd98e791b3f1dc898a082ff3e08adc92e..3e5ba040648c8637128f3aedc4247ed202d0b72b 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
++++ b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
+@@ -375,6 +375,7 @@ public abstract class ChunkGenerator implements BiomeManager.NoiseBiomeSource {
+                     if (structureplacement instanceof ConcentricRingsStructurePlacement) {
+                         ConcentricRingsStructurePlacement concentricringsstructureplacement = (ConcentricRingsStructurePlacement) structureplacement;
+                         BlockPos blockposition1 = this.getNearestGeneratedStructure(center, concentricringsstructureplacement);
++                        if (blockposition1 == null) continue;
+                         double d1 = center.distSqr(blockposition1);
+ 
+                         if (d1 < d0) {
