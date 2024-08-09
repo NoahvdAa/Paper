@@ -45,7 +45,7 @@ index 0139e85c0751564bb4d2847b7b2e48f75fee9e53..e8e4704304504e69c7964dcd4df8ce5d
      public CraftBogged(CraftServer server, net.minecraft.world.entity.monster.Bogged entity) {
          super(server, entity);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java
-index 986f7b18112ef183de3bbff269a92bf6ac945477..abba0986cc562f688682ba5e4822837a503586eb 100644
+index 986f7b18112ef183de3bbff269a92bf6ac945477..5ac263889ff9cc4f4f6365ccb57917a23ad6edc1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java
 @@ -14,7 +14,7 @@ import org.bukkit.entity.MushroomCow;
@@ -57,7 +57,7 @@ index 986f7b18112ef183de3bbff269a92bf6ac945477..abba0986cc562f688682ba5e4822837a
      public CraftMushroomCow(CraftServer server, net.minecraft.world.entity.animal.MushroomCow entity) {
          super(server, entity);
      }
-@@ -105,4 +105,11 @@ public class CraftMushroomCow extends CraftCow implements MushroomCow {
+@@ -105,4 +105,16 @@ public class CraftMushroomCow extends CraftCow implements MushroomCow {
      public String toString() {
          return "CraftMushroomCow";
      }
@@ -66,6 +66,11 @@ index 986f7b18112ef183de3bbff269a92bf6ac945477..abba0986cc562f688682ba5e4822837a
 +    @Override
 +    public void setSheared(boolean sheared) {
 +        if (sheared) this.shear();
++    }
++
++    @Override
++    public boolean isSheared() {
++        return false;
 +    }
 +    // Paper end
  }
@@ -83,7 +88,7 @@ index 030bf7b6312799231d0b614ba5c84fec23c276e3..37291d7ad9fdf0fe78894f82a418f40b
          super(server, entity);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java
-index 1e9807b8f468742d208f817e22d7625106fc1b58..a0bd62d6abaa195bc49063fa23e87a7697f24b99 100644
+index 1e9807b8f468742d208f817e22d7625106fc1b58..05cee4906169425ee6e80cf1302f2fa01f09d58f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java
 @@ -4,7 +4,7 @@ import net.minecraft.world.entity.animal.SnowGolem;
@@ -95,7 +100,7 @@ index 1e9807b8f468742d208f817e22d7625106fc1b58..a0bd62d6abaa195bc49063fa23e87a76
      public CraftSnowman(CraftServer server, SnowGolem entity) {
          super(server, entity);
      }
-@@ -28,4 +28,11 @@ public class CraftSnowman extends CraftGolem implements Snowman, com.destroystok
+@@ -28,4 +28,16 @@ public class CraftSnowman extends CraftGolem implements Snowman, com.destroystok
      public String toString() {
          return "CraftSnowman";
      }
@@ -104,6 +109,11 @@ index 1e9807b8f468742d208f817e22d7625106fc1b58..a0bd62d6abaa195bc49063fa23e87a76
 +    @Override
 +    public void setSheared(boolean sheared) {
 +        this.setDerp(sheared);
++    }
++    
++    @Override
++    public boolean isSheared() {
++        return this.isDerp();
 +    }
 +    // Paper end
  }

@@ -23,21 +23,10 @@ index 301d883a7626e3abd222517400367fc40d6fa2bd..23dbc56edf0d16cf07ced2899942abae
      public BlockState getBlockState() {
          return (this.blockEntityTag != null) ? this.blockEntityTag.copy() : CraftMetaBlockState.getBlockState(this.material, null);
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java
-index 3542c6e72f5ff459d50b73fa210ea835f52dfa49..2ad744875fea490eb8aa3883e4567ec1824c811a 100644
+index 3542c6e72f5ff459d50b73fa210ea835f52dfa49..43aa4920440a1626217a0fbc52d8404617ae7d10 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java
-@@ -7,8 +7,10 @@ import java.util.ArrayList;
- import java.util.List;
- import java.util.Map;
- import net.minecraft.core.BlockPos;
-+import net.minecraft.core.component.DataComponentMap;
- import net.minecraft.core.component.DataComponentPatch;
- import net.minecraft.core.component.DataComponents;
-+import net.minecraft.world.item.component.CustomData;
- import net.minecraft.world.level.block.entity.BannerPatternLayers;
- import org.bukkit.DyeColor;
- import org.bukkit.Material;
-@@ -298,4 +300,11 @@ public class CraftMetaShield extends CraftMetaItem implements ShieldMeta, BlockS
+@@ -298,4 +298,11 @@ public class CraftMetaShield extends CraftMetaItem implements ShieldMeta, BlockS
              default -> throw new IllegalArgumentException("Unknown banner colour");
          };
      }

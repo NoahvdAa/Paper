@@ -6,10 +6,10 @@ Subject: [PATCH] Add Shearable API
 
 diff --git a/src/main/java/io/papermc/paper/entity/Shearable.java b/src/main/java/io/papermc/paper/entity/Shearable.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b547922db418ff813ddb6a3b37dced0db393e1f5
+index 0000000000000000000000000000000000000000..45a18019bec1890f0abbdd8eaf15a8e9f6f1c803
 --- /dev/null
 +++ b/src/main/java/io/papermc/paper/entity/Shearable.java
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,43 @@
 +package io.papermc.paper.entity;
 +
 +import net.kyori.adventure.sound.Sound;
@@ -19,7 +19,7 @@ index 0000000000000000000000000000000000000000..b547922db418ff813ddb6a3b37dced0d
 +/**
 + * Represents an entity that can be sheared.
 + */
-+public interface Shearable extends Entity {
++public interface Shearable extends Entity, org.bukkit.entity.Shearable {
 +
 +    /**
 +     * Forces the entity to be sheared and then play the effect as if it were sheared by a player.
@@ -52,19 +52,9 @@ index 0000000000000000000000000000000000000000..b547922db418ff813ddb6a3b37dced0d
 +     * @return if the entity can be sheared
 +     */
 +    boolean readyToBeSheared();
-+
-+    /**
-+     * @return Whether the sheep is sheared.
-+     */
-+    public boolean isSheared();
-+
-+    /**
-+     * @param flag Whether to shear the sheep
-+     */
-+    public void setSheared(boolean flag);
 +}
 diff --git a/src/main/java/org/bukkit/entity/Bogged.java b/src/main/java/org/bukkit/entity/Bogged.java
-index 8b75a505a55a96a5795ac31a2d37307add12cd9e..6296a6f3f3e794677fd3a626376f357c740ec356 100644
+index 8b75a505a55a96a5795ac31a2d37307add12cd9e..a36bb84c17120bc578ab01d45f6f12fb1faf9548 100644
 --- a/src/main/java/org/bukkit/entity/Bogged.java
 +++ b/src/main/java/org/bukkit/entity/Bogged.java
 @@ -6,5 +6,5 @@ import org.jetbrains.annotations.ApiStatus;
@@ -72,7 +62,7 @@ index 8b75a505a55a96a5795ac31a2d37307add12cd9e..6296a6f3f3e794677fd3a626376f357c
   */
  @ApiStatus.Experimental
 -public interface Bogged extends AbstractSkeleton, Shearable {
-+public interface Bogged extends AbstractSkeleton, Shearable, io.papermc.paper.entity.Shearable { // Paper - Shear API
++public interface Bogged extends AbstractSkeleton, io.papermc.paper.entity.Shearable { // Paper - Shear API
  }
 diff --git a/src/main/java/org/bukkit/entity/MushroomCow.java b/src/main/java/org/bukkit/entity/MushroomCow.java
 index cef1700834643fe28ed5737578d91ecefbe99e2f..86c0043ef4e1288b6fe2f68a9b6d01c3de2c3454 100644
@@ -88,7 +78,7 @@ index cef1700834643fe28ed5737578d91ecefbe99e2f..86c0043ef4e1288b6fe2f68a9b6d01c3
      /**
       * Checks for the presence of custom potion effects to be applied to the
 diff --git a/src/main/java/org/bukkit/entity/Sheep.java b/src/main/java/org/bukkit/entity/Sheep.java
-index 46bc1a0ed9ee320c68a38362c1fa1f31319f01d8..01a0e5b1bb18d7a28d68329c2e2ab78a8df45f8e 100644
+index 46bc1a0ed9ee320c68a38362c1fa1f31319f01d8..45f55faed0d5f0db2671fa1ace59591e8061c4f2 100644
 --- a/src/main/java/org/bukkit/entity/Sheep.java
 +++ b/src/main/java/org/bukkit/entity/Sheep.java
 @@ -5,5 +5,5 @@ import org.bukkit.material.Colorable;
@@ -96,7 +86,7 @@ index 46bc1a0ed9ee320c68a38362c1fa1f31319f01d8..01a0e5b1bb18d7a28d68329c2e2ab78a
   * Represents a Sheep.
   */
 -public interface Sheep extends Animals, Colorable, Shearable {
-+public interface Sheep extends Animals, Colorable, Shearable, io.papermc.paper.entity.Shearable { // Paper - Shear API
++public interface Sheep extends Animals, Colorable, io.papermc.paper.entity.Shearable { // Paper - Shear API
  }
 diff --git a/src/main/java/org/bukkit/entity/Snowman.java b/src/main/java/org/bukkit/entity/Snowman.java
 index 10f8f6d45ae9280651c3ebddd1f90acbd7d6ff29..7fbfdb07585c7b28acea1f0c1f58ada0cc744441 100644

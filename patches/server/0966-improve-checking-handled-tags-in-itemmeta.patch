@@ -4,36 +4,6 @@ Date: Mon, 10 Jul 2023 16:10:15 -0700
 Subject: [PATCH] improve checking handled tags in itemmeta
 
 
-diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java
-index abba0986cc562f688682ba5e4822837a503586eb..5ac263889ff9cc4f4f6365ccb57917a23ad6edc1 100644
---- a/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java
-+++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftMushroomCow.java
-@@ -111,5 +111,10 @@ public class CraftMushroomCow extends CraftCow implements MushroomCow, io.paperm
-     public void setSheared(boolean sheared) {
-         if (sheared) this.shear();
-     }
-+
-+    @Override
-+    public boolean isSheared() {
-+        return false;
-+    }
-     // Paper end
- }
-diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java
-index a0bd62d6abaa195bc49063fa23e87a7697f24b99..05cee4906169425ee6e80cf1302f2fa01f09d58f 100644
---- a/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java
-+++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftSnowman.java
-@@ -34,5 +34,10 @@ public class CraftSnowman extends CraftGolem implements Snowman, com.destroystok
-     public void setSheared(boolean sheared) {
-         this.setDerp(sheared);
-     }
-+    
-+    @Override
-+    public boolean isSheared() {
-+        return this.isDerp();
-+    }
-     // Paper end
- }
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemMetas.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemMetas.java
 index a4c4ba0d02f9a072236ce86c1e98e2c60b059cb8..c9cda18761c6f925f7490984a7e035396a44a73a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemMetas.java
@@ -744,10 +714,10 @@ index d1cb8d520b6d7b0981d70412def71e7aab04560a..7f9182809f6e67ff571db0f365bc7e05
              potionContents.potion().ifPresent((potion) -> {
                  this.type = CraftPotionType.minecraftHolderToBukkit(potion);
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java
-index 2ad744875fea490eb8aa3883e4567ec1824c811a..c98b1cb9a2aca9c1e76893b4c9c851c747c13bcd 100644
+index 43aa4920440a1626217a0fbc52d8404617ae7d10..5b30f7bff841f5830ac554532b62150fbd7716f1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaShield.java
-@@ -44,7 +44,7 @@ public class CraftMetaShield extends CraftMetaItem implements ShieldMeta, BlockS
+@@ -42,7 +42,7 @@ public class CraftMetaShield extends CraftMetaItem implements ShieldMeta, BlockS
      }
  
      CraftMetaShield(DataComponentPatch tag) {
